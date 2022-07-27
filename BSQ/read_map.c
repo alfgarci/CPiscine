@@ -6,7 +6,7 @@
 /*   By: alfgarci <alfgarci@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:33:31 by alfgarci          #+#    #+#             */
-/*   Updated: 2022/07/27 03:54:57 by alfgarci         ###   ########.fr       */
+/*   Updated: 2022/07/27 04:49:44 by alfgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,21 @@ int	check_first_line(char *str, char *empty, char *obs, char *full)
 	int	num;
 	int	i;
 
-	i = -1;
+	i = 0;
 	num = 0;
-	while (str[++i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
+	if (str[0] <= '0' || str[0] > '9')
+		return (-1);
+	while (str[i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
 	{
-		num = num * 10 + str[i] - '0';
+		num *= 10; 
+		num += str[i] - '0';
+		i++;
 	}
-	empty = &str[i];
-	obs = &str[++i];
-	full = &str[++i];
+	*empty = str[i];
+	*obs = str[++i];
+	*full = str[++i];
+	if (str[++i] != '\0')
+		return (-1);
 	return (num);
 }
 
@@ -77,12 +83,12 @@ int	check_valid_map(char **map, char e, char o, char f)
 	j = 0;
 	while (map[i] != 0)
 	{
-		
+		j = 0;
 		if (get_len(map[1]) != get_len(map[i]))
 			return (1);
 		while (map[i][j] != '\0')
 		{
-			if (map[i][j] != e && map[i][f] != o && map[i][f] != f)
+			if (map[i][j] != e && map[i][j] != o && map[i][j] != f)
 				return (1);
 			j++;
 		}
@@ -91,17 +97,42 @@ int	check_valid_map(char **map, char e, char o, char f)
 	return (0);
 }
 
+void	print_map(char **map)
+{
+	int i = 1;
+	int j = 0;
+	while (map[i] != 0)
+	{
+		j = 0;
+		while (map[i][j] != '\0')
+		{
+			write(1, &map[i][j], 1);
+			j++;
+		}
+		write(1,"\n",1);
+		i++;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	char	**map;
 	int	res;
+	char 	e;
+	char	o;
+	char	f;
 
 	if (ac > 1)
 	{
-		map = read_map(av[1]);
-		res = check_valid_map(map, '.', 'o', 'x');
-	}
 
+		map = read_map(av[1]);
+		printf("NUM: %d\n",check_first_line(map[0], &e, &o, &f));
+		printf("%c\n", e);
+		printf("%c\n", o);
+		printf("%c\n", f);
+		res = check_valid_map(map, e, o, f);
+	}
+	print_map(map);
 	printf("%d\n", res);
 	return (0);
 }
