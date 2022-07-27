@@ -6,11 +6,18 @@
 /*   By: alfgarci <alfgarci@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:33:31 by alfgarci          #+#    #+#             */
-/*   Updated: 2022/07/27 03:28:53 by alfgarci         ###   ########.fr       */
+/*   Updated: 2022/07/27 03:54:57 by alfgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	check_firt_line(char *str, char *empty, char *obs, char *full)
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+
+char	**ft_split(char *str, char *charset);
+
+int	check_first_line(char *str, char *empty, char *obs, char *full)
 {
 	int	num;
 	int	i;
@@ -21,13 +28,13 @@ int	check_firt_line(char *str, char *empty, char *obs, char *full)
 	{
 		num = num * 10 + str[i] - '0';
 	}
-	empty = str[i];
-	obs = str[++i];
-	full = str[++i];
+	empty = &str[i];
+	obs = &str[++i];
+	full = &str[++i];
 	return (num);
 }
 
-char	**read_map(char *str)
+char	**read_map(char *map)
 {
 	char 	*tot_arr;
 	char	**map_arr;
@@ -36,12 +43,12 @@ char	**read_map(char *str)
 	int	count;
 
 	count = 0;
-	fd = open(map, O_RD);
+	fd = open(map, O_RDWR);
 	while (read(fd, &buff, 1) != 0)
 		count++;
 	close(fd);
 	tot_arr= (char *)malloc((count + 1) * sizeof(char));
-	fd = open(map, O_RD);
+	fd = open(map, O_RDWR);
 	count = -1;
 	while (read(fd, &buff, 1) != 0)
 		tot_arr[++count] = buff;
@@ -84,4 +91,17 @@ int	check_valid_map(char **map, char e, char o, char f)
 	return (0);
 }
 
-int	get_values()
+int	main(int ac, char **av)
+{
+	char	**map;
+	int	res;
+
+	if (ac > 1)
+	{
+		map = read_map(av[1]);
+		res = check_valid_map(map, '.', 'o', 'x');
+	}
+
+	printf("%d\n", res);
+	return (0);
+}
