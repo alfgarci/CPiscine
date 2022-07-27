@@ -6,7 +6,7 @@
 /*   By: alfgarci <alfgarci@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:33:31 by alfgarci          #+#    #+#             */
-/*   Updated: 2022/07/27 04:49:44 by alfgarci         ###   ########.fr       */
+/*   Updated: 2022/07/27 04:57:38 by alfgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,19 @@ int	main(int ac, char **av)
 	char 	e;
 	char	o;
 	char	f;
+	int bien;
 
 	if (ac > 1)
 	{
-
+		
 		map = read_map(av[1]);
-		printf("NUM: %d\n",check_first_line(map[0], &e, &o, &f));
+		bien = check_first_line(map[0], &e, &o, &f);
+		if (bien == -1)
+		{
+			printf("MAL\n");
+			return (-1);
+		}
+		printf("%d\n", bien);
 		printf("%c\n", e);
 		printf("%c\n", o);
 		printf("%c\n", f);
