@@ -6,21 +6,21 @@
 /*   By: alfgarci <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 02:46:21 by alfgarci          #+#    #+#             */
-/*   Updated: 2022/07/19 15:37:43 by alfgarci         ###   ########.fr       */
+/*   Updated: 2022/07/28 18:10:36 by alfgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_recursive_factorial(int nb)
 {
-	int	res;
+	int	r;
 
-	res = 1;
+	r = 1;
 	if (nb < 0)
 		return (0);
 	if (nb > 0)
 	{
-		res *= nb * ft_recursive_factorial(nb - 1);
+		r *= nb * ft_recursive_factorial(nb - 1);
 		nb--;
 	}
-	return (res);
+	return (r);
 }
